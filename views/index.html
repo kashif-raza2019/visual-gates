@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Visual Gates</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdn.plot.ly/plotly-2.11.1.min.js"></script>
+    <link rel="stylesheet" href="/public/css/style.css">
+    <link rel="stylesheet" href="/public/css/gates.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <!-- <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+    <script>
+      $( ".gate" ).draggable();
+    </script> -->
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" id="nav">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Visual Gates</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item space">
+              <a class="nav-link" href="#">   <i class="fa fa-github iconClass"></i></a>
+            </li>
+            <li class="nav-item space">
+              &nbsp;&nbsp;&nbsp;&nbsp;
+            </li>
+            <li class="nav-item space">
+              &nbsp; 
+              &nbsp;
+            </li>
+            <li class="nav-item space">
+              <select name="selectGate" id="sltgate" class="form-control" onchange="injectGate(this.value)">
+                <option value="or">OR</option>
+                <option value="and">AND</option>
+                <option value="nand">NAND</option>
+                <option value="nor">NOR</option>
+                <option value="xor">XOR</option>
+                <option value="xnor">XNOR</option>
+              </select>
+            </li>
+            <li class="nav-item space">
+              <button class="darkmode" style="outline:none!important; border:none!important;background-color: transparent;" onclick="darkModeToggle()"><i class="fa fa-toggle-off darkModeToggleIcon"></i></button>
+            </li>
+            <li class="nav-item space">
+              <a class="nav-link" href="https://www.kashifraza.tech/">  Kashif Raza  </a>
+            </li>
+
+            <li class="nav-item infoDiv space">
+              <button class="btn btn-info infoBtn"><i class="fa fa-info-circle infoIcon"></i></button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container-fluid">
+      <div class="row">
+          <div class="col-9" id="canvasContainer">
+            <div id="canvas"></div>
+          </div>
+          <div class="col-3" id="control">
+            <h4>Control Input / Output</h4>
+            <div id="signalInput"></div>
+            <form action="/" method="GET" id="controllerForm">
+              <div class="form-group">
+                <select name="inputSignal" id="inputSignal" class="form-control" onchange="changeSignal()">
+                  <option value="Sine">Sinosoidal Input</option>
+                  <option value="Step">Step Input</option>
+                </select>
+                <label for="inputVoltage">Input Voltage</label>
+                <input type="range" name="inputVoltage" class="form-range" id="inputVoltage" step="0.5" min="0" max="7"  value="5">
+              </div>
+            </form>
+            <div id="signalOutput">
+              Generated signal Output <br>
+              After 1 Cycle : <span id="outputVoltage"></span> <br>
+              <button class="btn btn-success">Analyze</button> &nbsp; <button class="btn btn-primary">Plot</button> &nbsp; <button class="btn btn-danger" onclick="location.href='/'">Reset</button>
+            </div>
+          </div>
+      </div>
+    </div>
+    <div class="container-fluid">
+      <div class="row">
+         <div class="col-3 text-center">
+           <h4>Console Window</h4>
+           <i class="fa fa-terminal terminalIcon" id="termlIcon"></i><br>
+           <button type="button" class="btn btn-danger clearWindowBtn" onclick="clearWindow()"><i class="fa fa-trash"></i> Clear</button>
+            <button type="button" class="toggleConsoleBtn" onclick="toggleConsole()"><i class="fa fa-toggle-on toggleIcon"></i></button>
+          </div>
+          <div class="col-9" id="consoleContainer">
+            <div id="console" contenteditable="false">
+              
+            </div>
+          </div>
+      </div>
+    </div>
+    <!-- Gate Canvas -->
+    <script src="/public/js/canvas.js"></script>
+    <!-- Console Functionalities -->
+    <script src="/public/js/console.js"></script>
+    <!-- Plotting Function for Graph -->
+    <script src="/public/js/plotter.js"></script>
+
+    <!-- Including Bootstrap JS (with its jQuery dependency) so that dynamic components work -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  </body>
+</html>
