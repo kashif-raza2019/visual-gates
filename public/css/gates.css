@@ -1,0 +1,50 @@
+.gate{
+    position: absolute;
+    width: 100px;
+    height: 80px;
+    background-color: white;
+}
+.gates-or{
+    background-image: url('/public/assets/or_gate.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.gates-and{
+    background-image: url('/public/assets/and_gate.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.gates-not{
+    background-image: url('/public/assets/not_gate.png');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+.gates-xor{
+    background-image: url('/public/assets/xor_gate.png');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+.gates-nand{
+    background-image: url('/public/assets/nand_gate.png');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+.gates-nor{
+    background-image: url('/public/assets/nor_gate.png');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+.gates-xnor{
+    background-image: url('/public/assets/xnor_gate.png');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+.gate-inner{
+    font-size: 14px;
+    text-align: center;
+}
+
+.gateImage{
+    width: 100px;
+    height: 80px;
+}
