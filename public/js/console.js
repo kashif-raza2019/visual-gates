@@ -1,6 +1,6 @@
 
 const console = document.querySelector("#console");
-
+const consleContainer = document.querySelector('#consoleContainer');
 let lineCount = 1;
 
 function log(message) {
@@ -17,63 +17,81 @@ function clearWindow(){
     }
 }
 
-const toggleBtn = document.querySelector(".toggleConsoleBtn");
-let flag = true;
-let darkFlag = true;
-function toggleConsole(){
-    console.classList.toggle('hide');
-    if(flag){
-        if(!darkFlag){
-            toggleBtn.innerHTML = "<i class='fa fa-toggle-off toggleIcon' style='color: lavender'></i>";
-        }else{
-            toggleBtn.innerHTML = '<i class="fa fa-toggle-off toggleIcon" style="color: #12273B"></i>';
-        }
-        flag = false;
-    }else{
-        if(!darkFlag){
-            toggleBtn.innerHTML = '<i class="fa fa-toggle-on toggleIcon" style="color: lavender"></i>';
-        }else{
-            toggleBtn.innerHTML = '<i class="fa fa-toggle-on toggleIcon" style="color: #12273B"></i>';
-        }
-        flag = true;
-    }
-}
+const cnsoleFuncForm = document.querySelector("#consoleFunctionForm");
+const cnsoleFuncText = document.querySelector("#consoleFunction");
+cnsoleFuncForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    let input = cnsoleFuncText.value;
+    cnsoleFuncText.value = "";
+    performFunction(input);
+});
 
-let nav = document.querySelector("#nav");
-const toggleDarkMode = document.querySelector(".darkmode");
-const canvs = document.querySelector("#canvas");
-const inpsgn = document.querySelector("#inputSignal");
-const sltgate = document.querySelector("#sltgate");
-const termlIcon = document.querySelector("#termlIcon");
-const toggleIconS = document.querySelector(".toggleIcon");
-function darkModeToggle(){
-    document.body.style.transition = 'all 0.5s ease-in-out';
-    document.body.classList.toggle('dark');
-    if(darkFlag){
-        toggleIconS.style.color = 'lavender';
-        nav.classList.remove('navbar-light');
-        nav.classList.remove('bg-light');
-        nav.classList.add('navbar-dark');
-        nav.classList.add('bg-dark');
-        inpsgn.classList.add('select-dark');
-        sltgate.classList.add('select-dark');
-        canvs.classList.remove('canvas-light');
-        canvs.classList.add('canvas-dark');
-        termlIcon.classList.add('lvndr');
-        toggleDarkMode.innerHTML = '<i class="fa fa-toggle-on darkModeToggleIcon"></i>';
-        darkFlag = false;
+function performFunction(val){
+    log("<span class='text-warning'>"+val+"</span>");
+    if(val == "clear" || val == "cls" || val == "clearWindow" || val == "clc"){
+        clearWindow();
+    }else if(val == "--help"){
+        log("Help Center for Visual Gates -- ");
+        log("clear - Clears the window");
+        log("--help - Shows this message");
+        log("--version - Shows the version of the program");
+        log("--about - Shows the about message");
+        log("--contact - Shows the contact information");
+        log("--license - Shows the license information");
+        log("--credits - Shows the credits");
+        log("--source - Shows the source code");
+        log("--refresh - Reloads the page");
+        log("--print - Prints the console data");
+        log("--save - Saves the console data");
+        log("--delete - Deletes the console data");
+        log("--notes - Print the saved notes");
+        log("--clearNotes - Clears the saved notes");
+    }else if(val == "--about"){
+        log("This is a simple console for visualizing logic circuits and it's evaluation.");
+    }else if(val == "--contact"){
+        log("You can contact me at: <span class='yellow'> kashifraza08012001@gmail.com</span>");
+        log("You can also find me on: <span class='yellow'> github.com/kashif-raza2019</span>");
+        log("You can also find me at: <span class='yellow'> kashifraza.tech</span>");
+    }else if(val == "--version"){
+        log("Version: <span class='yellow'> 1.0.0</span>");
+    }else if(val == "--license"){
+        log("This program is licensed under the ISC License.");
+    }else if(val == "--credits"){
+        log("This program was created by: <span class='yellow'> Kashif Raza</span>");
+    }else if(val == "--source"){
+        log("The source code can be found at: <span class='yellow'> github.com/kashif-raza2019/visual-gates</span>");
+    }else if(val == "--refresh"){
+        window.location.reload();
+    }else if(val == "--print"){
+        if(localStorage.getItem('console')){
+            log("Printing the data...");
+            log("<span class='text-warning'>Data:</span>");
+            log("<span class='text-warning'>"+localStorage.getItem('console')+"</span>");
+        }else if(localStorage.getItem('console') == "" || localStorage.getItem('console') == null){ 
+            log("<span class='text-danger'>No data to print.</span>");
+        }
+    }else if(val == "--save"){
+        log("Saving the data...");
+        localStorage.setItem('console', console.innerHTML);
+        log("<span class='text-success'>Data saved successfully!</span>");
+    }else if(val == "--delete"){
+        log("Deleting the data...");
+        localStorage.removeItem('console');
+        log("<span class='text-success'>Data deleted successfully!</span>");
+    }else if(val == "--exit"){
+        window.close();
+    }else if(val == "--notes"){
+        if(localStorage.getItem('notes') != " " && localStorage.getItem('notes') != null){
+            log("<span class='text-secondary'>"+localStorage.getItem('notes')+"</span>");
+        }else{
+            log("<span class='text-danger'>No data to print.</span>");
+        }
+    }else if(val == "--clearNotes"){
+        log("Clearing the notes...");
+        localStorage.removeItem('notes');
+        log("<span class='text-success'>Notes cleared successfully!</span>");
     }else{
-        toggleIconS.style.color = '#12273B';
-        nav.classList.remove('navbar-dark');
-        nav.classList.remove('bg-dark');
-        nav.classList.add('navbar-light');
-        nav.classList.add('bg-light');
-        inpsgn.classList.remove('select-dark');
-        sltgate.classList.remove('select-dark');
-        canvs.classList.remove('canvas-dark');
-        canvs.classList.add('canvas-light');
-        termlIcon.classList.remove('lvndr');
-        toggleDarkMode.innerHTML = '<i class="fa fa-toggle-off darkModeToggleIcon"></i>';
-        darkFlag = true;
+        log("<span class='text-danger'>Error: Command not found try '--help' for checking the commands</span>");
     }
 }

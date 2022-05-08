@@ -12,11 +12,12 @@
     <script src="https://cdn.plot.ly/plotly-2.11.1.min.js"></script>
     <link rel="stylesheet" href="/public/css/style.css">
     <link rel="stylesheet" href="/public/css/gates.css">
+    <link rel="stylesheet" href="/public/css/textEditor.css">
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-    <!-- <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
     <script>
-      $( ".gate" ).draggable();
-    </script> -->
+       
+    </script>
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light" id="nav">
@@ -39,6 +40,8 @@
             </li>
             <li class="nav-item space">
               <select name="selectGate" id="sltgate" class="form-control" onchange="injectGate(this.value)">
+                <option value="">Select a gate</option>
+                <option value="wire">Wire</option>
                 <option value="or">OR</option>
                 <option value="and">AND</option>
                 <option value="nand">NAND</option>
@@ -50,12 +53,30 @@
             <li class="nav-item space">
               <button class="darkmode" style="outline:none!important; border:none!important;background-color: transparent;" onclick="darkModeToggle()"><i class="fa fa-toggle-off darkModeToggleIcon"></i></button>
             </li>
+            <div class="nav-link space">
+              <button class="btn btn-outline-primary" data-toggle="modal" data-target="#logicModal"><i class="fa fa-calculator" style="font-size: large;"></i></button>
+            </div>
+            <!-- <div class="nav-link space">
+              <button class="arrowBtn" onclick="moveLeft();"><i class="fa fa-arrow-left"></i></button>
+            </div>
+            <div class="nav-link space">
+              <button class="arrowBtn" onclick="moveRight();"><i class="fa fa-arrow-right"></i></button>
+            </div>
+            <div class="nav-link space">
+              <button class="arrowBtn" onclick="moveUp();"><i class="fa fa-arrow-up"></i></button>
+            </div>
+            <div class="nav-link space">
+              <button class="arrowBtn" onclick="moveDown();"><i class="fa fa-arrow-down"></i></button>
+            </div> -->
+            <li class="nav-item space">
+              <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#textEditorModal" style="margin-top:8px;" title="Write Notes"><i class="fa fa-sticky-note-o infoIcon"></i></button>
+            </li>
             <li class="nav-item space">
               <a class="nav-link" href="https://www.kashifraza.tech/">  Kashif Raza  </a>
             </li>
 
             <li class="nav-item infoDiv space">
-              <button class="btn btn-info infoBtn"><i class="fa fa-info-circle infoIcon"></i></button>
+              <button class="btn btn-info infoBtn" data-toggle="modal" data-target="#infoModel"><i class="fa fa-info-circle infoIcon"></i></button>
             </li>
           </ul>
         </div>
@@ -92,8 +113,12 @@
          <div class="col-3 text-center">
            <h4>Console Window</h4>
            <i class="fa fa-terminal terminalIcon" id="termlIcon"></i><br>
-           <button type="button" class="btn btn-danger clearWindowBtn" onclick="clearWindow()"><i class="fa fa-trash"></i> Clear</button>
-            <button type="button" class="toggleConsoleBtn" onclick="toggleConsole()"><i class="fa fa-toggle-on toggleIcon"></i></button>
+           <!-- <button type="button" class="btn btn-danger clearWindowBtn" onclick="clearWindow()"><i class="fa fa-trash"></i> Clear</button> -->
+            <form action="" id="consoleFunctionForm">
+              <input type="text" id="consoleFunction" >
+              <input type="submit" value="submit" hidden />
+            </form>
+            <button type="button" class="toggleConsoleBtn" onclick="toggleConsole()"><i class="fa fa-toggle-on toggleIcon" style="color: lavender"></i></button>
           </div>
           <div class="col-9" id="consoleContainer">
             <div id="console" contenteditable="false">
@@ -102,14 +127,113 @@
           </div>
       </div>
     </div>
-    <!-- Gate Canvas -->
-    <script src="/public/js/canvas.js"></script>
+
+
+    <!-- Text Editor Modal -->
+    <!-- Modal Fullscreen -->
+    <div class="modal" id="textEditorModal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog modal-fullscreen" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" style="color: #333;">Personal NotePad</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div id="editor"></div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" id="saveNotes">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="logicModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel" style="color:rgb(27, 26, 26);">Enter the Boolean Equation</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form action="/logic" method="post" onformsubmit="console.log('Hello');">
+              <div class="form-group">
+                <label for="equation" style="color:rgb(27, 26, 26);">Enter the Boolean Equation</label>
+                <input type="text" class="form-control" style="color:rgb(27, 26, 26);" name="equation" id="logicEquation" placeholder="Enter the Boolean Equation">
+              </div>
+              <div class="form-group">
+                <label for="input" style="color:rgb(27, 26, 26);">Enter the Input of the Equation</label>
+                <input type="text" class="form-control" style="color:rgb(27, 26, 26);" name="input" id="input" placeholder="Enter the Input of the Equation Separeated By Commas">
+              </div>
+              <div class="form-group">
+                <label for="output" style="color:rgb(27, 26, 26);">Enter the Output of the Equation</label>
+                <input type="text" class="form-control" style="color:rgb(27, 26, 26);" name="output" id="output" placeholder="Enter the Output of the Equation Separeated By Commas">
+              </div>
+              <div class="form-group">
+                <button type="submit" name="submit" class="btn btn-primary">Calculate the Logic</button>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- I Button Modal -->
+    <div class="modal fade" id="infoModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel" style="color:rgb(27, 26, 26);">Info</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p style="color:rgb(27, 26, 26);">This is logic gate simulator designed for understanding cum usage for 
+              finding the truth table and solving the logic gates combinational circuit, for solving 
+              use | for Or , & for And , ^ for Xor , ~ for Not , and ! for Nand , and N for Nor in the equation.</p>
+            </p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-success" data-dismiss="modal">Ok, Got it!</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      // Saved your data before closing window?
+      window.onbeforeunload = function (e) {
+          e = e || window.event;
+          // For IE and Firefox prior to version 4
+          if (e) {
+              e.returnValue = 'Have you saved your stuff before leaving?';
+          }
+          // For Safari
+          return 'Have you saved your stuff before leaving?';
+      };
+    </script>
     <!-- Console Functionalities -->
     <script src="/public/js/console.js"></script>
+    <!-- dark mode file -->
+    <script src="/public/js/darkmode.js"></script>
     <!-- Plotting Function for Graph -->
     <script src="/public/js/plotter.js"></script>
-
+    <!-- Gate Canvas -->
+    <script src="/public/js/canvas.js"></script>
+    <!-- <script src="/public/js/draggable.js"></script> -->
     <!-- Including Bootstrap JS (with its jQuery dependency) so that dynamic components work -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <!-- Test Editor Js -->
+    <script src="/public/js/textEditor.js"></script>
+    <script src="/public/js/notes.js"></script>
   </body>
 </html>

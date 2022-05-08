@@ -64,7 +64,7 @@ function waveGenerator(inputSignal, inputVoltage) {
             "height": 300
         }
     });
-    log(`Input Signal Generated Type: ${inputSignal} Voltage: ${inputVoltage} Volts`);
+    log(`Input Signal Generated Type: ${inputSignal} Voltage:<span class='yellow'> ${inputVoltage}</span> Volts`);
 }
 
 const inputVoltage = document.querySelector("#inputVoltage");

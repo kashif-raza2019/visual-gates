@@ -2,8 +2,11 @@
 // A Gate Visualiser cum Simulator in Node JS
 const express = require('express');
 const app = express();
+const bodyParser = require('body-parser');
 
 const port = process.env.PORT || 3000;
+
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // importing routes
 const indexRoute = require('./routes/indexRoute');
